@@ -1,0 +1,58 @@
+server:
+  port: 8011
+spring:
+  application:
+    name: cloud-gateway-service
+  cloud:
+    # 指定zookeeper服务器
+    zookeeper:
+      connect-string: 192.168.234.110:2181
+    gateway:
+#      default-filters:
+#        - AddResponseHeader=X-Response-Default-Red, Default-Blue
+#        - PrefixPath=/httpbin
+      routes:
+          #路由id,没有固定规则，建议配合服务名使用
+        - id: url-proxy-1
+          # 路由的服务器进程
+          uri: lb://cloud-payment-service
+          # 断言
+          predicates:
+            #匹配后拼接的路径
+            - Path=/payment/**
+        - id: url-proxy-myblog
+          uri: http://t.csdn.cn
+          predicates:
+            - Path=/90hMu
+        - id: paymentService-proxy-1 # 路由id
+          uri: http://localhost:8000 # 路由到的服务主机ip:port
+          predicates:
+            # 多个路径匹配
+            - Path=/order/**,/test/**
+          # 通过过滤器进行后续操作
+          # 转发路由前，在加上/customer前缀路径
+          filters:
+          - PrefixPath=/customer
+          - AddResponseHeader=X-Response-Default-Red, Default-Yellow
+          - UserIdCheck
+          # 使用内置的HystrixGatewayFilterFactory工厂类做熔断降级
+          - name: Hystrix
+            args:
+              name: orderFallback # command命令的名称
+              fallbackUri: forward:/gateway/fallback # 降级的uri地址，这里是直接进行请求转发
+
+hystrix:
+  command:
+    # hystrix默认配置
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+    # hystrix通过指定command的个性化配置
+    # 这里配置command name=orderFallback的配置信息
+    orderFallback:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
