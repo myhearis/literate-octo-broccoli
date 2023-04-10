@@ -48,7 +48,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 2000
+            timeoutInMilliseconds: 1999
     # hystrix通过指定command的个性化配置
     # 这里配置command name=orderFallback的配置信息
     orderFallback:
