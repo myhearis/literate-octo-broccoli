@@ -38,7 +38,7 @@ management:
       exposure:
         include:
           - "*"
-            
+
 # 测试config
 payment:
-  msg: hello,payment
+  msg: hello,payment,update

@@ -59,4 +59,4 @@ hystrix:
 
 # 测试config，给配置绑定类添加信息
 mygateway:
-  msg: hello,gateway
+  msg: hello,gateway,update
