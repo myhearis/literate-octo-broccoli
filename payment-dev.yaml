@@ -1,0 +1,40 @@
+# 使用zookeeper代替Eureka的配置
+server:
+  #  配置服务端口
+  port: 8006
+spring:
+  application:
+    #    指定应用名称
+    name: cloud-payment-service
+  mvc:
+    #开启rest风格过滤器
+    hiddenmethod:
+      filter:
+        enabled: true
+  #  配置数据源,目前项目里使用了mysql8
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.234.101:3306/cloud?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password: root
+  #    cloud配置
+  cloud:
+    #    配置zookeeper服务器地址
+    zookeeper:
+      connect-string: 192.168.234.110:2181
+
+
+#mybatis的配置
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  #  软件包的别名
+  type-aliases-package: com.atsu.springcloud.entities
+
+# 配置监控的路径
+management:
+  endpoints:
+    web:
+      # 配置需要暴露的路径
+      exposure:
+        include:
+          - "*"
