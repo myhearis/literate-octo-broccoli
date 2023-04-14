@@ -41,4 +41,4 @@ management:
 
 # 测试config
 payment:
-  msg: hello,payment,update,hello,2023.4.14,hello
+  msg: hello,payment,update,hello,2023.4.14,hello,fadfad
